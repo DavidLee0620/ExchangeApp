@@ -1,5 +1,11 @@
 package config
 
+import (
+	"log"
+
+	"github.com/spf13/viper"
+)
+
 type Config struct {
 	App struct {
 		Name string
@@ -11,5 +17,21 @@ type Config struct {
 		User     string
 		Password string
 		Name     string
+	}
+}
+
+var AppConfig *Config
+
+func InitConfig() {
+	viper.SetConfigName("config")
+	viper.SetConfigType("yml")
+	viper.AddConfigPath("./config")
+	if err := viper.ReadInConfig(); err != nil {
+		log.Fatalf("ReadInConfig err:%v", err)
+
+	}
+	AppConfig = &Config{}
+	if err := viper.Unmarshal(AppConfig); err != nil {
+		log.Fatalf("Unmarshal err:%v", err)
 	}
 }
