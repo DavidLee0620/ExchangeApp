@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/DavidLee0620/ExchangeApp/Exchangeapp_backend/global"
 	"github.com/DavidLee0620/ExchangeApp/Exchangeapp_backend/model"
 	"github.com/DavidLee0620/ExchangeApp/Exchangeapp_backend/utils"
 	"github.com/gin-gonic/gin"
@@ -30,6 +31,8 @@ func Register(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"err": err.Error()})
 		return
 	}
+	global.DB.AutoMigrate(&user)
+
 	ctx.JSON(http.StatusOK, gin.H{"token": token})
 
 }
