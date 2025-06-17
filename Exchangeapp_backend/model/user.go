@@ -2,7 +2,7 @@ package model
 
 import "gorm.io/gorm"
 
-type Uesr struct {
+type User struct {
 	//预定义
 	gorm.Model
 	Username string `gorm:"unique"`

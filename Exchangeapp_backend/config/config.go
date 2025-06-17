@@ -32,5 +32,5 @@ func InitConfig() {
 	if err := viper.Unmarshal(AppConfig); err != nil {
 		log.Fatalf("Unmarshal err:%v", err)
 	}
-
+	initDB()
 }

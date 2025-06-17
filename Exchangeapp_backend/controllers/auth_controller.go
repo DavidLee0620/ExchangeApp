@@ -10,7 +10,7 @@ import (
 )
 
 func Register(ctx *gin.Context) {
-	var user model.Uesr
+	var user model.User
 	if err := ctx.ShouldBindBodyWithJSON(&user); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -52,7 +52,7 @@ func Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"err": err})
 		return
 	}
-	var user model.Uesr
+	var user model.User
 	if err := global.DB.Where("username=?", input.Username).Error; err != nil {
 		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "wrong username"})
 		return
