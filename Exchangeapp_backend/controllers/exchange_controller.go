@@ -27,3 +27,12 @@ func CreateExchangeRate(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, exchangeRate)
 
 }
+
+func GetExchangeRate(ctx *gin.Context) {
+	var exchangeRate []model.ExchangeRate
+	if err := global.DB.Find(&exchangeRate).Error; err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"err": err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, exchangeRate)
+}
