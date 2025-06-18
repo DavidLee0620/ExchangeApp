@@ -53,7 +53,7 @@ func Login(ctx *gin.Context) {
 		return
 	}
 	var user model.User
-	if err := global.DB.Where("username=?", input.Username).Error; err != nil {
+	if err := global.DB.Where("username=?", input.Username).First(&user).Error; err != nil {
 		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "wrong username"})
 		return
 	}
