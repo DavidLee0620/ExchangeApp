@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"errors"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -22,13 +23,35 @@ func HashPassword(pwd string) (string, error) {
 
 func GenerateJWT(name string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"exp":      time.Now().Add(time.Hour * 3).Unix(),
+		"exp":      time.Now().Add(time.Hour * 72).Unix(),
 		"username": name,
 	})
 	sightoken, err := token.SignedString([]byte("secret"))
 	return "Bearer " + sightoken, err
 }
+func ParseJWT(token string) (string, error) {
+	if len(token) > 7 && token[:7] == "Bearea" {
+		token = token[7:]
+	}
+	parseToken, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
+		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.New("unexpected Signing Method")
+		}
+		return []byte("secret"), nil
+	})
+	if err != nil {
+		return "", err
+	}
+	if claims, ok := parseToken.Claims.(jwt.MapClaims); ok && parseToken.Valid {
+		username, ok := claims["username"].(string)
+		if !ok {
+			return "", errors.New("username is not string")
+		}
+		return username, nil
+	}
+	return "", err
 
+}
 func CheckPwd(pwd string, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(pwd))
 	return err == nil
