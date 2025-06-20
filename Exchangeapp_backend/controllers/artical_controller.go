@@ -30,7 +30,11 @@ func CreateArtical(ctx *gin.Context) {
 func GetArtical(ctx *gin.Context) {
 	var articals []model.Artical
 	if err := global.DB.Find(&articals).Error; err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ctx.JSON(http.StatusNotFound, gin.H{"err": err.Error()})
+		} else {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"err": err.Error()})
+		}
 		return
 	}
 	ctx.JSON(http.StatusOK, articals)
@@ -47,5 +51,6 @@ func GetArticalByID(ctx *gin.Context) {
 		}
 		return
 	}
+	ctx.JSON(http.StatusOK, artical)
 
 }

@@ -7,3 +7,7 @@ database:
   MaxIdleConns: 11
   MaxOpenConns: 114
   
+redis:
+  Addr: localhost:6379
+  DB: 0
+  Password: 
