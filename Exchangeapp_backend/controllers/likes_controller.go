@@ -25,7 +25,7 @@ func GetArticalLikes(ctx *gin.Context) {
 	likes, err := global.RedisDB.Get(likeKey).Result()
 	if err == redis.Nil {
 		likes = "0"
-	} else {
+	} else if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
