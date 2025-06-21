@@ -30,7 +30,7 @@ func GenerateJWT(name string) (string, error) {
 	return "Bearer " + sightoken, err
 }
 func ParseJWT(token string) (string, error) {
-	if len(token) > 7 && token[:7] == "Bearea" {
+	if len(token) > 7 && token[:7] == "Bearer " {
 		token = token[7:]
 	}
 	parseToken, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {

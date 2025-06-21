@@ -46,7 +46,7 @@ func Register(ctx *gin.Context) {
 func Login(ctx *gin.Context) {
 	var input struct {
 		Username string `json:"username"`
-		Password string `json:"Password"`
+		Password string `json:"password"`
 	}
 	if err := ctx.ShouldBindBodyWithJSON(&input); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"err": err})
